@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.com.finaly.Controllers.Controller_Start">
+   <children>
+      <Text layoutX="62.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Добро пожаловать в игру &quot;Морской бой&quot;  Выберите режим игры:" textAlignment="CENTER" wrappingWidth="274.9366455078125">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <VBox alignment="TOP_CENTER" layoutX="109.0" layoutY="87.0" prefHeight="200.0" prefWidth="176.0" spacing="10.0">
+         <children>
+            <Button fx:id="button1" mnemonicParsing="false" prefHeight="25.0" prefWidth="142.0" text="Human Vs Human" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS" />
+            <Button fx:id="button2" mnemonicParsing="false" prefHeight="25.0" prefWidth="142.0" text="Human Vs Computer" textAlignment="RIGHT" />
+            <Button fx:id="button3" mnemonicParsing="false" prefHeight="25.0" prefWidth="142.0" text="Computer Vs Computer" />
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets top="5.0" />
+         </padding>
+      </VBox>
+   </children>
+</Pane>
