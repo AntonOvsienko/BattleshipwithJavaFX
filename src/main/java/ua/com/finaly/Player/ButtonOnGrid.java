@@ -15,6 +15,7 @@ public class ButtonOnGrid extends Button {
 
     private static String shipicon="⛵";
     private static String shipEmpty="\uD83D\uDFAB";
+    private static String ship2="⛵";
 
     private int x;
     private int y;
