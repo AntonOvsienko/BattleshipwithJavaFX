@@ -89,6 +89,10 @@ public class CompLogic {
                 Vizualization.Aura(massivfinal, player);
             }
         }
+        player.setCount1(4);
+        player.setCount2(3);
+        player.setCount3(2);
+        player.setCount4(1);
     }
 
     public static void BuildCoil(int[] massivfinal, int coint) {

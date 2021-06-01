@@ -59,8 +59,6 @@ public class Controller_CompVsComp implements Initializable {
         player2 = new Anketa();
         player1_enemy = new Anketa();
         player2_enemy = new Anketa();
-        spisok1=new TextArea();
-        spisok2=new TextArea();
 
         messageWindow.setFont(Font.font(13));
         messageWindow.setText("Выберите как смотреть игру,\nпошагово или сразу результат");
@@ -74,6 +72,8 @@ public class Controller_CompVsComp implements Initializable {
         CompLogic.Initial(player1);
         CompLogic.Initial(player2);
         PlayComp.GridVizual(Grid1, Grid2, player1, player1_enemy, player2, player2_enemy, spisok1, spisok2);
+        PlayComp.SpisokVizual(player1, spisok1);
+        PlayComp.SpisokVizual(player2, spisok2);
 
         exit.setOnAction(actionEvent1 -> {
             onClickExit(actionEvent1);

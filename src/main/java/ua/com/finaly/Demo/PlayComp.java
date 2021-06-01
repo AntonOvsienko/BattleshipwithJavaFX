@@ -1,5 +1,6 @@
 package ua.com.finaly.Demo;
 
+import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -7,6 +8,8 @@ import javafx.scene.layout.GridPane;
 import ua.com.finaly.Anketa;
 import ua.com.finaly.ShipClass;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import static javafx.scene.paint.Color.RED;
@@ -34,6 +37,7 @@ public class PlayComp {
             break;
         }
     }
+
     public static String ShipChecked(int x, int y,Anketa player1_enemy,Anketa player2){
         for (ShipClass shipcounter:player2.getShipList()){
             for (int i=0;i<shipcounter.getShip().size();i+=2){
@@ -146,9 +150,9 @@ public class PlayComp {
                 p1.getAILogic().add(x);
                 p1.getAILogic().add(y+1);
             }
-        } catch (ArrayIndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e){
         }
-        System.out.println(p1.getAILogic());
+
         try{
         if (p1_enemy.getField()[x+1][y]==3){
             int round=0;
@@ -162,9 +166,9 @@ public class PlayComp {
                 }
             }
         }
-        }catch (ArrayIndexOutOfBoundsException e){
+        }catch (IndexOutOfBoundsException e){
         }
-        System.out.println(p1.getAILogic());
+
         try{
             if (p1_enemy.getField()[x-1][y]==3){
                 int round=0;
@@ -178,9 +182,9 @@ public class PlayComp {
                     }
                 }
             }
-        }catch (ArrayIndexOutOfBoundsException e){
+        }catch (IndexOutOfBoundsException e){
         }
-        System.out.println(p1.getAILogic());
+
         try{
             if (p1_enemy.getField()[x][y+1]==3){
                 int round=0;
@@ -194,9 +198,9 @@ public class PlayComp {
                     }
                 }
             }
-        }catch (ArrayIndexOutOfBoundsException e){
+        }catch (IndexOutOfBoundsException e){
         }
-        System.out.println(p1.getAILogic());
+
         try{
             if (p1_enemy.getField()[x][y-1]==3){
                 int round=0;
@@ -210,10 +214,8 @@ public class PlayComp {
                     }
                 }
             }
-        }catch (ArrayIndexOutOfBoundsException e){
+        }catch (IndexOutOfBoundsException e){
         }
-        System.out.println(p1.getAILogic());
-        System.out.println("----------------------------");
     }
 
     public static void GridVizual(GridPane Grid1, GridPane Grid2,Anketa pl1, Anketa pl1_enemy, Anketa pl2,
@@ -227,8 +229,8 @@ public class PlayComp {
         SpisokVizual(pl2, spisok2);
     }
 
-    private static void SpisokVizual(Anketa pl2, TextArea spisok2) {
-        spisok2.setText(ship +"             -" + pl2.getShipList().stream().filter(x->x.getShip().size()==2).filter(x->x.isLife()==true).count() + "шт" +
+    public static void SpisokVizual(Anketa pl2, TextArea spisok2) {
+        spisok2.setText(ship +"             -" + pl2.getShipList().stream().filter(x->x.getShip().size()==2).filter(x->x.getHealth()!=0).count() + "шт" +
                 "\n" + ship + ship + "          -" + pl2.getShipList().stream().filter(x->x.getShip().size()==4).filter(x->x.getHealth()!=0).count() + "шт" +
                 "\n" + ship + ship + ship + "       -"+ pl2.getShipList().stream().filter(x->x.getShip().size()==6).filter(x->x.getHealth()!=0).count() + "шт" +
                 "\n" + ship + ship + ship + ship +"    -"+ pl2.getShipList().stream().filter(x->x.getShip().size()==8).filter(x->x.getHealth()!=0).count() + "шт");
