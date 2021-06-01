@@ -2,16 +2,22 @@ package ua.com.finaly.Controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import ua.com.finaly.Anketa;
 import ua.com.finaly.Initialization;
 import ua.com.finaly.Player.ButtonOnGrid;
 import ua.com.finaly.Player.CreateShip;
+import ua.com.finaly.Start;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -32,6 +38,12 @@ public class Controller_HumanInizial implements Initializable {
 
     @FXML
     private Button ready;
+
+    @FXML
+    private Button back;
+
+    @FXML
+    private Button ReadyGo;
 
     @FXML
     private Text name;
@@ -65,6 +77,16 @@ public class Controller_HumanInizial implements Initializable {
         buttonname.setOnAction(this::onClickName);
 
         ready.setOnAction(this::onClickReady);
+
+        back.setOnAction(actionEvent -> {
+            try {
+                onClickBack(actionEvent);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        ReadyGo.setOnAction(this::onClickReadyGo);
     }
 
     @FXML
@@ -76,6 +98,21 @@ public class Controller_HumanInizial implements Initializable {
 
     @FXML
     private void onClickName(ActionEvent actionEvent) {
+        name.setText(nameEnter.getText());
+    }
+
+    @FXML
+    private void onClickBack(ActionEvent actionEvent) throws IOException {
+        Stage stage = Start.getPStage();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getClassLoader().getResource("StartChoice.fxml"));
+        Pane root = loader.load();
+        Scene scene = new Scene(root, 400.0D, 300.0D);
+        stage.setScene(scene);
+    }
+
+    @FXML
+    private void onClickReadyGo(ActionEvent actionEvent) {
         name.setText(nameEnter.getText());
     }
 

@@ -9,36 +9,15 @@ public class CreateShip {
         player.getShipList().clear();
         for (int i=1;i<11;i++){
             int finalI = i;
-            if (button.stream().filter(y->y.getY()== finalI).count()>=4){
-
-            }
-        }
-//        List<ButtonOnGrid> ship4x=button.stream().filter(x->x.getX()).collect(Collectors.toList());
-        List<ButtonOnGrid> ship3x=button;
-        List<ButtonOnGrid> ship3=button;
-        List<ButtonOnGrid> ship2=button;
-        List<ButtonOnGrid> ship1=button;
-        int count4=1;
-        int count3=2;
-        int count2=3;
-        int count1=4;
-    }
-    public static void xstep4(List <ButtonOnGrid> buttonx,int count){
-        int line4;
-        for (int i=1;i<11-count;i++){
-            for (ButtonOnGrid x1:buttonx){
-                if (x1.getX()==i){
-                    for (ButtonOnGrid x2:buttonx){
-                        if (x2.getX()==i+1){
-                            for (ButtonOnGrid x3:buttonx){
-                                if (x2.getX()==i+2){
-
-                                }
-                            }
-                        }
-                    }
+            for (int j=1;j<8;j++) {
+                int finalJ = j;
+                if (button.stream().filter(x->x.getX()==finalI).filter(y->y.getY()==finalJ||
+                        y.getY()==finalJ+1||y.getY()==finalJ+2||y.getY()==finalJ+3).count()==4){
                 }
             }
         }
+
+
     }
+
 }
