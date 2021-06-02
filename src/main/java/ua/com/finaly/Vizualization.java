@@ -5,10 +5,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
+import static javafx.scene.paint.Color.GREEN;
 import static javafx.scene.paint.Color.RED;
 
 public class Vizualization {
-    private static String ship="\u2B1B";
+    private static String ship="⛵";
     private static String empty="\u2B1C";
     private static String shipEmpty="\u2BBD";
     private static String shipHit="\u2B1B";
@@ -122,5 +123,6 @@ public class Vizualization {
             }
         }
     }
+
 }
 

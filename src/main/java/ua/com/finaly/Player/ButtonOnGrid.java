@@ -49,9 +49,8 @@ public class ButtonOnGrid extends Button {
             this.setText(shipicon);
             this.setTextFill(BLACK);
         }
-//        this.setDisable(true);
-//        this.AIOff(x,y,getPlayer1(),getPlayer1_enemy(), getPlayer2());
     }
+
     public void AIOff(int x, int y, Anketa player1, Anketa player1_enemy, Anketa player2){
         String[] XA={"A","B","C","D","E","F","G","H","I","G"};
         String text;

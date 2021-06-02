@@ -56,25 +56,25 @@ public class ShipClass {
             int xmin = xcoord.stream().min(Integer::compareTo).get();
             int ymax = ycoord.stream().max(Integer::compareTo).get();
             int ymin = ycoord.stream().min(Integer::compareTo).get();
-            if (xmin == 0) {
+            if (xmin == 1) {
                 xauramin = xmin;
             } else {
                 xauramin = xmin - 1;
             }
 
-            if (xmax == 9) {
+            if (xmax == 10) {
                 xauramax = xmax;
             } else {
                 xauramax = xmax + 1;
             }
 
-            if (ymin == 0) {
+            if (ymin == 1) {
                 yauramin = ymin;
             } else {
                 yauramin = ymin - 1;
             }
 
-            if (ymax == 9) {
+            if (ymax == 10) {
                 yauramax = ymax;
             } else {
                 yauramax = ymax + 1;
@@ -98,6 +98,17 @@ public class ShipClass {
             }
         }
         return rever;
+    }
+
+    public boolean shipChecked(ArrayList<Integer> aura){
+        for (int i=0;i<ship.size();i+=2){
+            for (int j=0;j<aura.size();j+=2){
+                if (ship.get(i)==aura.get(j)&&ship.get(i+1)==aura.get(j+1)){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public ArrayList<Integer> getAura() {
@@ -134,8 +145,8 @@ public class ShipClass {
 
     @Override
     public String toString() {
-        return "ShipClass{" +
-                "aura=" + aura +
+        return "ShipClass{" + "ship=" + ship +
+                ",aura=" + aura +
                 '}';
     }
 }
