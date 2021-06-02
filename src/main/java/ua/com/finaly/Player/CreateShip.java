@@ -91,7 +91,7 @@ public class CreateShip {
         for (int i=1;i<11;i++){
             if (player.getCount1()==4) break;
             int finalI = i;
-            for (int j=1;j<10;j++) {
+            for (int j=1;j<11;j++) {
                 int finalJ = j;
                 if (button.stream().filter(x->x.getX()==finalI).filter(y->y.getY()==finalJ).count()==1){
                     player.getShipList().add(new ShipClass(finalI,finalJ));

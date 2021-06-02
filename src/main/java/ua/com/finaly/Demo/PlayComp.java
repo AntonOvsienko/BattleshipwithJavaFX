@@ -2,6 +2,7 @@ package ua.com.finaly.Demo;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
@@ -229,6 +230,17 @@ public class PlayComp {
         SpisokVizual(pl2, spisok2);
     }
 
+    public static void GridVizualwithHuman(GridPane Grid1, GridPane Grid2,Anketa pl1, Anketa pl1_enemy, Anketa pl2,
+                                  Anketa pl2_enemy, TextArea spisok1, TextArea spisok2){
+
+        GridReset(Grid1);
+        GridReset(Grid2);
+        GridOn(Grid1, pl1, pl2_enemy);
+        GridOnComp(Grid2, pl2, pl1_enemy);
+        SpisokVizual(pl1, spisok1);
+        SpisokVizual(pl2, spisok2);
+    }
+
     public static void SpisokVizual(Anketa pl2, TextArea spisok2) {
         spisok2.setText(ship +"             -" + pl2.getShipList().stream().filter(x->x.getShip().size()==2).filter(x->x.getHealth()!=0).count() + "шт" +
                 "\n" + ship + ship + "          -" + pl2.getShipList().stream().filter(x->x.getShip().size()==4).filter(x->x.getHealth()!=0).count() + "шт" +
@@ -277,6 +289,41 @@ public class PlayComp {
             for(int column = 1; column < 11; column++){
 
                 Label tf = new Label();
+                tf.setPrefHeight(0);
+                tf.setPrefWidth(0);
+                tf.setAlignment(Pos.CENTER);
+                tf.setMaxHeight(1.7976931348623157E308);
+                tf.setMaxWidth(1.7976931348623157E308);
+                tf.setGraphicTextGap(6.0);
+                tf.setMinHeight(0);
+                tf.setMinWidth(0);
+                if (pl1.getField()[column-1][row-1]==1&&pl2_enemy.getField()[column-1][row-1]==3){
+                    tf.setDisable(true);
+                    tf.setText(ship);
+                    tf.setOpacity(1);
+                    tf.setTextFill(RED);
+                } else if (pl1.getField()[column-1][row-1]==1){
+                    tf.setDisable(true);
+                    tf.setText(ship);
+                    tf.setOpacity(0.2);
+                } else if (pl2_enemy.getField()[column-1][row-1]==2){
+                    tf.setDisable(true);
+                    tf.setText(shipEmpty);
+                }
+
+                Grid1.setRowIndex(tf,row);
+                Grid1.setColumnIndex(tf,column);
+                Grid1.getChildren().add(tf);
+            }
+        }
+    }
+
+    private static void GridOnComp(GridPane Grid1,Anketa pl1,
+                               Anketa pl2_enemy){
+        for(int row = 1; row < 11; row++){
+            for(int column = 1; column < 11; column++){
+
+                Button tf = new Button();
                 tf.setPrefHeight(0);
                 tf.setPrefWidth(0);
                 tf.setAlignment(Pos.CENTER);

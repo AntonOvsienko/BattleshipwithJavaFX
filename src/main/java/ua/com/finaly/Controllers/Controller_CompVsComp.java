@@ -114,7 +114,6 @@ public class Controller_CompVsComp implements Initializable {
         } else {
             PlayComp.LetsPlay(player2, player2_enemy, player1, messageWindow);
         }
-
         PlayComp.GridVizual(Grid1, Grid2, player1, player1_enemy, player2, player2_enemy, spisok1, spisok2);
         if (player1.getShipList().stream().filter(x -> x.getHealth() != 0).count() == 0 ||
                 player2.getShipList().stream().filter(x -> x.getHealth() != 0).count() == 0) {

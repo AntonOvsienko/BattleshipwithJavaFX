@@ -12,6 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ua.com.finaly.*;
+import ua.com.finaly.Demo.CompLogic;
 import ua.com.finaly.Demo.PlayComp;
 import ua.com.finaly.Player.ButtonOnGrid;
 import ua.com.finaly.Player.CreateShip;
@@ -23,6 +24,7 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import static javafx.scene.paint.Color.BLACK;
+import static javafx.scene.paint.Color.RED;
 
 public class Controller_HumanInizial implements Initializable {
 
@@ -50,6 +52,9 @@ public class Controller_HumanInizial implements Initializable {
     private Text textmanual;
 
     @FXML
+    private Text textmistake;
+
+    @FXML
     private TextField nameEnter;
 
     private static Anketa player1;
@@ -68,6 +73,7 @@ public class Controller_HumanInizial implements Initializable {
 
         ShipText();
         Initialization.GridStart(player1,Grid1);
+        CompLogic.Initial(player2);
 
         buttonname.setOnAction(this::onClickName);
 
@@ -81,7 +87,13 @@ public class Controller_HumanInizial implements Initializable {
             }
         });
 
-        ReadyGo.setOnAction(this::onClickReadyGo);
+        ReadyGo.setOnAction(actionEvent -> {
+            try {
+                onClickReadyGo(actionEvent);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @FXML
@@ -91,11 +103,33 @@ public class Controller_HumanInizial implements Initializable {
         CreateShip.Create(buttonship,player1);
         for (ShipClass x:player1.getShipList()){
             for (ShipClass y:player1.getShipList()){
-                x.setLife(x.shipChecked(y.getAura()));
+                if (x.shipChecked(y.getAura())) {
+                    x.setLife(true);
+                } else {
+                    x.setLife(false);
+                    break;
+                }
             }
         }
         Initialization.GridTwoButton(player1,Grid1);
         ShipText();
+        if (player1.getShipList().stream().filter(x-> x.isLife()).count()==10){
+            textmistake.setText("");
+            ReadyGo.setVisible(true);
+        } else {
+            String text="";
+            textmistake.setFill(RED);
+            text+="Ошибка\n";
+            ReadyGo.setVisible(false);
+            if (player1.getShipList().size()!=10){
+                text+="Не все корабли расставлены\n";
+            }
+            if (player1.getShipList().size()==10&&player1.getShipList().stream().filter(x-> x.isLife()).count()!=10||
+                    player1.getShipList().stream().filter(x-> x.isLife()==false).count()>0){
+                text+="Корабли пересекаются\n";
+            }
+            textmistake.setText(text);
+        }
     }
 
     private void ShipText() {
@@ -122,9 +156,28 @@ public class Controller_HumanInizial implements Initializable {
     }
 
     @FXML
-    private void onClickReadyGo(ActionEvent actionEvent) {
-        name.setText(nameEnter.getText());
+    private void onClickReadyGo(ActionEvent actionEvent) throws IOException {
+        Stage stage= Start.getPStage();
+        FXMLLoader loader=new FXMLLoader();
+        loader.setLocation(getClass().getClassLoader().getResource("CompvsHuman.fxml"));
+        Pane root = loader.load();
+        Scene scene = new Scene(root, 700.0D, 500.0D);
+        stage.setScene(scene);
     }
 
+    public static Anketa getPlayer1() {
+        return player1;
+    }
 
+    public static Anketa getPlayer2() {
+        return player2;
+    }
+
+    public static Anketa getPlayer1_enemy() {
+        return player1_enemy;
+    }
+
+    public static Anketa getPlayer2_enemy() {
+        return player2_enemy;
+    }
 }
