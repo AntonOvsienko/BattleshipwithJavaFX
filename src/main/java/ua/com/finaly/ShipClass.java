@@ -56,25 +56,25 @@ public class ShipClass {
             int xmin = xcoord.stream().min(Integer::compareTo).get();
             int ymax = ycoord.stream().max(Integer::compareTo).get();
             int ymin = ycoord.stream().min(Integer::compareTo).get();
-            if (xmin == 1) {
+            if (xmin == 0) {
                 xauramin = xmin;
             } else {
                 xauramin = xmin - 1;
             }
 
-            if (xmax == 10) {
+            if (xmax == 9) {
                 xauramax = xmax;
             } else {
                 xauramax = xmax + 1;
             }
 
-            if (ymin == 1) {
+            if (ymin == 0) {
                 yauramin = ymin;
             } else {
                 yauramin = ymin - 1;
             }
 
-            if (ymax == 10) {
+            if (ymax ==9) {
                 yauramax = ymax;
             } else {
                 yauramax = ymax + 1;

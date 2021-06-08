@@ -7,33 +7,35 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import ua.com.finaly.Anketa;
+import ua.com.finaly.Player.ButtonOnPlay;
 import ua.com.finaly.ShipClass;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static javafx.scene.paint.Color.BLACK;
 import static javafx.scene.paint.Color.RED;
 
 public class PlayComp {
 
     private static String ship="⛵";
     private static String empty="⬜";
-    private static String shipEmpty="\uD83D\uDFAB";
+    private static String shipEmpty="✖";
     private static String shipHit="\u2B1B";
 
-    public static void LetsPlay(Anketa player1, Anketa player1_enemy,Anketa player2, TextArea messageWindow) throws InterruptedException {
+    public static void LetsPlay(Anketa player2, Anketa player2_enemy,Anketa player1, TextArea messageWindow) {
             Random random = new Random();
             while (true){
-            if (player1.isAILogicOn()) {
-                AIOn(player1, player1_enemy, player2,messageWindow);
+            if (player2.isAILogicOn()) {
+                AIOn(player2, player2_enemy, player1,messageWindow);
             } else {
                 int x = random.nextInt(10);
                 int y = random.nextInt(10);
-                if (player1_enemy.getField()[x][y] == 3 || player1_enemy.getField()[x][y] == 2) {
+                if (player2_enemy.getField()[x][y] == 3 || player2_enemy.getField()[x][y] == 2) {
                     continue;
                 }
-                AIOff(x, y, player1, player1_enemy, player2,messageWindow);
+                AIOff(x, y, player2, player2_enemy, player1,messageWindow);
             }
             break;
         }
@@ -61,107 +63,107 @@ public class PlayComp {
         return "попал";
     }
 
-    public static void AIOff(int x,int y,Anketa player1, Anketa player1_enemy, Anketa player2,TextArea messageWindow){
+    public static void AIOff(int x,int y,Anketa player2, Anketa player2_enemy, Anketa player1,TextArea messageWindow){
         String[] XA={"A","B","C","D","E","F","G","H","I","G"};
         String text;
-        if (player2.getField()[x][y] == 1) {
-            player1_enemy.getField()[x][y] = 3;
-            text = ShipChecked(x, y, player1_enemy,player2);
+        if (player1.getField()[x][y] == 1) {
+            player2_enemy.getField()[x][y] = 3;
+            text = ShipChecked(x, y, player2_enemy,player1);
             if (text.equals("попал")){
-                player1.setAILogicOn(true);
-                AICoordinateFuture(x,y,player1,player1_enemy);
+                player2.setAILogicOn(true);
+                AICoordinateFuture(x,y,player2,player2_enemy);
             }
         } else {
-            player1_enemy.getField()[x][y] = 2;
+            player2_enemy.getField()[x][y] = 2;
             text = "мимо";
-            player1.setAIturn(false);
-            player2.setAIturn(true);
+            player2.setAIturn(false);
+            player1.setAIturn(true);
         }
-        messageWindow.setText(player1.getName()+" выбрал координаты " + XA[x] +
+        messageWindow.setText(player2.getName()+" выбрал координаты " + XA[x] +
                 (y+1) + "-" + text);
     }
 
-    public static void AIOn(Anketa p1, Anketa p1_enemy, Anketa p2, TextArea messageWindow){
+    public static void AIOn(Anketa p2, Anketa p2_enemy, Anketa p1, TextArea messageWindow){
         String[] XA={"A","B","C","D","E","F","G","H","I","G"};
         String text;
         int x;
         int y;
         Random random = new Random();
-        if (p1.getAILogic().size()==2){
-            x=p1.getAILogic().get(0);
-            y=p1.getAILogic().get(1);
-            p1.getAILogic().clear();
+        if (p2.getAILogic().size()==2){
+            x=p2.getAILogic().get(0);
+            y=p2.getAILogic().get(1);
+            p2.getAILogic().clear();
         } else {
-            int ji = random.nextInt(p1.getAILogic().size()/2);
-            x = p1.getAILogic().get(ji*2);
-            p1.getAILogic().remove(ji*2);
-            y = p1.getAILogic().get(ji*2);
-            p1.getAILogic().remove(ji*2);
+            int ji = random.nextInt(p2.getAILogic().size()/2);
+            x = p2.getAILogic().get(ji*2);
+            p2.getAILogic().remove(ji*2);
+            y = p2.getAILogic().get(ji*2);
+            p2.getAILogic().remove(ji*2);
             }
         if (p2.getField()[x][y] == 1) {
-            p1_enemy.getField()[x][y] = 3;
-            text = ShipChecked(x, y, p1_enemy,p2);
+            p2_enemy.getField()[x][y] = 3;
+            text = ShipChecked(x, y, p2_enemy,p1);
             if (text.equals("попал")){
-                AICoordinateFuture(x,y,p1,p1_enemy);
+                AICoordinateFuture(x,y,p2,p2_enemy);
             } else {
-                p1.setAILogicOn(false);
-                p1.getAILogic().clear();
+                p2.setAILogicOn(false);
+                p2.getAILogic().clear();
             }
         } else {
-            p1_enemy.getField()[x][y] = 2;
+            p2_enemy.getField()[x][y] = 2;
             text = "мимо";
-            p1.setAIturn(false);
-            p2.setAIturn(true);
+            p2.setAIturn(false);
+            p1.setAIturn(true);
         }
-        messageWindow.setText(p1.getName()+" выбрал координаты " + XA[x] +
+        messageWindow.setText(p2.getName()+" выбрал координаты " + XA[x] +
                 (y+1) + "-" + text);
     }
 
-    public static void AICoordinateFuture(int x, int y, Anketa p1, Anketa p1_enemy){
-        System.out.println(p1.getAILogic());
+    public static void AICoordinateFuture(int x, int y, Anketa p2, Anketa p2_enemy){
+        System.out.println(p2.getAILogic());
         try {
-            if (p1_enemy.getField()[x - 1][y] == 0) {
-                p1.getAILogic().add(x - 1);
-                p1.getAILogic().add(y);
+            if (p2_enemy.getField()[x - 1][y] == 0) {
+                p2.getAILogic().add(x - 1);
+                p2.getAILogic().add(y);
             }
         } catch (ArrayIndexOutOfBoundsException ignored){
 
         }
 
         try {
-            if (p1_enemy.getField()[x + 1][y] == 0) {
-                p1.getAILogic().add(x + 1);
-                p1.getAILogic().add(y);
+            if (p2_enemy.getField()[x + 1][y] == 0) {
+                p2.getAILogic().add(x + 1);
+                p2.getAILogic().add(y);
             }
         } catch (ArrayIndexOutOfBoundsException ignored){
 
         }
 
         try {
-            if (p1_enemy.getField()[x][y-1] == 0){
-                p1.getAILogic().add(x);
-                p1.getAILogic().add(y-1);
+            if (p2_enemy.getField()[x][y-1] == 0){
+                p2.getAILogic().add(x);
+                p2.getAILogic().add(y-1);
             }
         } catch (ArrayIndexOutOfBoundsException e){
 
         }
 
         try {
-            if (p1_enemy.getField()[x][y+1] == 0){
-                p1.getAILogic().add(x);
-                p1.getAILogic().add(y+1);
+            if (p2_enemy.getField()[x][y+1] == 0){
+                p2.getAILogic().add(x);
+                p2.getAILogic().add(y+1);
             }
         } catch (IndexOutOfBoundsException e){
         }
 
         try{
-        if (p1_enemy.getField()[x+1][y]==3){
+        if (p2_enemy.getField()[x+1][y]==3){
             int round=0;
             int i;
-            for (i=0;i<p1.getAILogic().size()-round+1;i+=2){
-                if (p1.getAILogic().get(i+1)!=y){
-                    p1.getAILogic().remove(i);
-                    p1.getAILogic().remove(i);
+            for (i=0;i<p2.getAILogic().size()-round+1;i+=2){
+                if (p2.getAILogic().get(i+1)!=y){
+                    p2.getAILogic().remove(i);
+                    p2.getAILogic().remove(i);
                     i-=2;
                     round+=2;
                 }
@@ -171,13 +173,13 @@ public class PlayComp {
         }
 
         try{
-            if (p1_enemy.getField()[x-1][y]==3){
+            if (p2_enemy.getField()[x-1][y]==3){
                 int round=0;
                 int i;
-                for (i=0;i<p1.getAILogic().size()-round+1;i+=2){
-                    if (p1.getAILogic().get(i+1)!=y){
-                        p1.getAILogic().remove(i);
-                        p1.getAILogic().remove(i);
+                for (i=0;i<p2.getAILogic().size()-round+1;i+=2){
+                    if (p2.getAILogic().get(i+1)!=y){
+                        p2.getAILogic().remove(i);
+                        p2.getAILogic().remove(i);
                         i-=2;
                         round+=2;
                     }
@@ -187,13 +189,13 @@ public class PlayComp {
         }
 
         try{
-            if (p1_enemy.getField()[x][y+1]==3){
+            if (p2_enemy.getField()[x][y+1]==3){
                 int round=0;
                 int i;
-                for (i=0;i<p1.getAILogic().size()-round+1;i+=2){
-                    if (p1.getAILogic().get(i)!=x){
-                        p1.getAILogic().remove(i);
-                        p1.getAILogic().remove(i);
+                for (i=0;i<p2.getAILogic().size()-round+1;i+=2){
+                    if (p2.getAILogic().get(i)!=x){
+                        p2.getAILogic().remove(i);
+                        p2.getAILogic().remove(i);
                         i-=2;
                         round+=2;
                     }
@@ -203,13 +205,13 @@ public class PlayComp {
         }
 
         try{
-            if (p1_enemy.getField()[x][y-1]==3){
+            if (p2_enemy.getField()[x][y-1]==3){
                 int round=0;
                 int i;
-                for (i=0;i<p1.getAILogic().size()-round+1;i+=2){
-                    if (p1.getAILogic().get(i)!=x){
-                        p1.getAILogic().remove(i);
-                        p1.getAILogic().remove(i);
+                for (i=0;i<p2.getAILogic().size()-round+1;i+=2){
+                    if (p2.getAILogic().get(i)!=x){
+                        p2.getAILogic().remove(i);
+                        p2.getAILogic().remove(i);
                         i-=2;
                         round+=2;
                     }
@@ -285,6 +287,7 @@ public class PlayComp {
     }
     private static void GridOn(GridPane Grid1,Anketa pl1,
                                Anketa pl2_enemy){
+
         for(int row = 1; row < 11; row++){
             for(int column = 1; column < 11; column++){
 
@@ -308,6 +311,7 @@ public class PlayComp {
                     tf.setOpacity(0.2);
                 } else if (pl2_enemy.getField()[column-1][row-1]==2){
                     tf.setDisable(true);
+                    tf.setOpacity(1);
                     tf.setText(shipEmpty);
                 }
 
@@ -323,7 +327,7 @@ public class PlayComp {
         for(int row = 1; row < 11; row++){
             for(int column = 1; column < 11; column++){
 
-                Button tf = new Button();
+                Label tf = new Label();
                 tf.setPrefHeight(0);
                 tf.setPrefWidth(0);
                 tf.setAlignment(Pos.CENTER);
@@ -332,17 +336,33 @@ public class PlayComp {
                 tf.setGraphicTextGap(6.0);
                 tf.setMinHeight(0);
                 tf.setMinWidth(0);
-                if (pl1.getField()[column-1][row-1]==1&&pl2_enemy.getField()[column-1][row-1]==3){
+                if (pl1.getField()[column-1][row-1]==1){
                     tf.setText(ship);
                     tf.setOpacity(1);
                     tf.setTextFill(RED);
-                } else if (pl1.getField()[column-1][row-1]==1){
-                    tf.setText(ship);
-                    tf.setOpacity(0.2);
-                } else if (pl2_enemy.getField()[column-1][row-1]==2){
+                } else {
+                    tf.setOpacity(1);
                     tf.setText(shipEmpty);
+                    tf.setTextFill(BLACK);
                 }
 
+                Grid1.setRowIndex(tf,row);
+                Grid1.setColumnIndex(tf,column);
+                Grid1.getChildren().add(tf);
+            }
+        }
+
+        for(int row = 1; row < 11; row++){
+            for(int column = 1; column < 11; column++){
+                ButtonOnPlay tf = new ButtonOnPlay(column,row);
+                tf.setPrefHeight(0);
+                tf.setPrefWidth(0);
+                tf.setAlignment(Pos.CENTER);
+                tf.setMaxHeight(1.7976931348623157E308);
+                tf.setMaxWidth(1.7976931348623157E308);
+                tf.setGraphicTextGap(6.0);
+                tf.setMinHeight(0);
+                tf.setMinWidth(0);
                 Grid1.setRowIndex(tf,row);
                 Grid1.setColumnIndex(tf,column);
                 Grid1.getChildren().add(tf);

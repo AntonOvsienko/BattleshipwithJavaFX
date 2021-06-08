@@ -13,12 +13,14 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import ua.com.finaly.Anketa;
+import ua.com.finaly.Checked;
 import ua.com.finaly.Demo.CompLogic;
 import ua.com.finaly.Demo.PlayComp;
 import ua.com.finaly.Start;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 
@@ -51,7 +53,8 @@ public class Controller_CompVsHuman implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        exit.setText(" ");
+        messageWindow.setText(" ");
         player2.setName("Basic");
         comp1.setText(player1.getName());
         comp2.setText(player2.getName());
@@ -74,28 +77,6 @@ public class Controller_CompVsHuman implements Initializable {
         });
     }
 
-    private void onClickResult(ActionEvent actionEvent) throws IOException, InterruptedException {
-        String name = "";
-        while (player1.getShipList().stream().filter(x -> x.getHealth() != 0).count() != 0 &&
-                player2.getShipList().stream().filter(x -> x.getHealth() != 0).count() != 0) {
-            if (player1.isAIturn()) {
-                PlayComp.LetsPlay(player1, player1_enemy, player2, messageWindow);
-            } else {
-                PlayComp.LetsPlay(player2, player2_enemy, player1, messageWindow);
-            }
-        }
-        PlayComp.GridVizual(Grid1, Grid2, player1, player1_enemy, player2, player2_enemy, spisok1, spisok2);
-        messageWindow.setText("");
-        if (player1.getShipList().stream().filter(x -> x.getHealth() != 0).count() != 0) {
-            name = player1.getName();
-        } else {
-            name = player2.getName();
-        }
-        exit.setVisible(true);
-        exit.setText("Поздравляем " + name + " победил\n" +
-                "нажмите на кнопку чтобы закончить");
-    }
-
     @FXML
     private void onClickRestart(ActionEvent actionEvent) throws IOException, InterruptedException {
         Stage stage = Start.getPStage();
@@ -112,5 +93,52 @@ public class Controller_CompVsHuman implements Initializable {
         stage.close();
     }
 
+    @FXML
+    public static void LetsBattle(Anketa player1,Anketa player1_enemy,Anketa player2, Anketa player2_enemy,
+                                  TextArea messageWindow,Button exit, int x, int y) {
+        while(true){
+            if (player1.isAIturn()) {
+                if (player2.getField()[x][y]==1){
+                   CheckFireUser(x,y,player1,player1_enemy,player2,messageWindow);
+                } else {
+                    player1.setAIturn(false);
+                }
+            } else {
+                PlayComp.LetsPlay(player2, player2_enemy, player1, messageWindow);
+                if (PlayComp.ShipChecked(x, y, player2_enemy,player1).equalsIgnoreCase("попал")
+                        ||PlayComp.ShipChecked(x, y, player2_enemy,player1).equalsIgnoreCase("убил")){
 
+            }
+        }
+        if (player1.getShipList().stream().filter(z -> z.getHealth() != 0).count() != 0) {
+            exit.setVisible(true);
+            exit.setText("Поздравляем " + player1.getName() + " победил\n" +
+                    "нажмите на кнопку чтобы закончить");
+        } else if (player2.getShipList().stream().filter(z -> z.getHealth() != 0).count() != 0) {
+            exit.setVisible(true);
+            exit.setText("Поздравляем " + player2.getName() + " победил\n" +
+                    "нажмите на кнопку чтобы закончить");
+            }
+        }
+    }
+
+    @FXML
+    public static void CheckFireUser(int x,int y,Anketa p1, Anketa p1_enemy, Anketa p2,TextArea messageWindow){
+        String[] XA={"A","B","C","D","E","F","G","H","I","G"};
+        String text;
+        if (p2.getField()[x][y] == 1) {
+            p1_enemy.getField()[x][y] = 3;
+            text = PlayComp.ShipChecked(x, y, p1_enemy,p2);
+            if (text.equals("попал")){
+            } else {
+                p1.setAILogicOn(false);
+                p1.getAILogic().clear();
+            }
+        } else {
+            p1_enemy.getField()[x][y] = 2;
+            text = "мимо";
+        }
+        messageWindow.setText(p1.getName()+" выбрал координаты " + XA[x] +
+                (y+1) + "-" + text);
+    }
 }
