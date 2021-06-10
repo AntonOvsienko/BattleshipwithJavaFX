@@ -305,5 +305,6 @@
             </font>
         </TextArea>
       <Button fx:id="exit" layoutX="225.0" layoutY="330.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="250.0" text="Выход" textAlignment="CENTER" visible="false" />
+      <Button fx:id="choiceCoil" layoutX="317.0" layoutY="285.0" mnemonicParsing="false" text="&lt;-готово" />
     </children>
 </Pane>

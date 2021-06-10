@@ -1,6 +1,8 @@
-package ua.com.finaly.Demo;
+package ua.com.finaly.Player;
 
-import ua.com.finaly.*;
+import ua.com.finaly.Anketa;
+import ua.com.finaly.ShipClass;
+import ua.com.finaly.Vizualization;
 
 import java.util.Arrays;
 import java.util.Random;

@@ -1,18 +1,13 @@
-package ua.com.finaly.Demo;
+package ua.com.finaly.Player;
 
-import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import ua.com.finaly.Anketa;
 import ua.com.finaly.Controllers.Controller_CompVsHuman;
-import ua.com.finaly.Player.ButtonOnPlay;
 import ua.com.finaly.ShipClass;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import static javafx.scene.paint.Color.BLACK;
@@ -21,9 +16,7 @@ import static javafx.scene.paint.Color.RED;
 public class PlayComp {
 
     private static String ship="⛵";
-    private static String empty="⬜";
     private static String shipEmpty="✖";
-    private static String shipHit="\u2B1B";
 
     public static void LetsPlay(Anketa player2, Anketa player2_enemy,Anketa player1, TextArea messageWindow) {
             Random random = new Random();

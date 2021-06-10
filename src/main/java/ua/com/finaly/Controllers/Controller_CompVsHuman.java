@@ -10,19 +10,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import ua.com.finaly.Anketa;
-import ua.com.finaly.Checked;
-import ua.com.finaly.Demo.CompLogic;
-import ua.com.finaly.Demo.PlayComp;
+import ua.com.finaly.Player.PlayComp;
+import ua.com.finaly.Player.ButtonOnPlay;
 import ua.com.finaly.Start;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Random;
 import java.util.ResourceBundle;
-
 
 
 public class Controller_CompVsHuman implements Initializable {
@@ -45,24 +41,26 @@ public class Controller_CompVsHuman implements Initializable {
     private TextArea spisok2;
     @FXML
     private Button exit;
+    @FXML
+    private Button choiceCoil;
 
     Anketa player1 = Controller_HumanInizial.getPlayer1();
     Anketa player2 = Controller_HumanInizial.getPlayer2();
     Anketa player1_enemy = Controller_HumanInizial.getPlayer1_enemy();
     Anketa player2_enemy = Controller_HumanInizial.getPlayer2_enemy();
 
+    private static int xplayer=0;
+    private static int yplayer=0;
+    private static String textship=" ";
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        exit.setText(" ");
-        messageWindow.setText(" ");
         player2.setName("Basic");
         comp1.setText(player1.getName());
         comp2.setText(player2.getName());
         player1.setAIturn(true);
         player2.setAIturn(!player1.isAIturn());
         PlayComp.GridVizualwithHuman(Grid1, Grid2, player1, player1_enemy, player2, player2_enemy, spisok1, spisok2);
-        PlayComp.SpisokVizual(player1, spisok1);
-        PlayComp.SpisokVizual(player2, spisok2);
 
         exit.setOnAction(actionEvent1 -> {
             onClickExit(actionEvent1);
@@ -75,6 +73,55 @@ public class Controller_CompVsHuman implements Initializable {
                 e.printStackTrace();
             }
         });
+
+        choiceCoil.setOnAction(actionEvent1 -> {
+            if (!ButtonOnPlay.isActive()){
+                player1.getButtonplay().stream()
+                        .filter(x->x.getX()==xplayer)
+                        .filter(y->y.getY()==yplayer)
+                        .forEach(x->x.setDisable(true));
+                onChoiceCoil(actionEvent1);
+            }
+        });
+    }
+    @FXML
+    private void onChoiceCoil(ActionEvent actionEvent1) {
+        while(true){
+            if (player1.isAIturn()) {
+                if (player2.getField()[xplayer-1][yplayer-1]==1){
+                   CheckFireUser(xplayer-1,yplayer-1,player1,player1_enemy,player2,messageWindow);
+                   PlayComp.SpisokVizual(player1, spisok1);
+                   ButtonOnPlay.setActive(true);
+                   return;
+                } else {
+                    player1.setAIturn(false);
+                }
+            } else {
+                PlayComp.LetsPlay(player2, player2_enemy, player1, messageWindow);
+                if (textship.equalsIgnoreCase("попал")
+                        ||textship.equalsIgnoreCase("убил")){
+                    PlayComp.GridReset(Grid1);
+                    PlayComp.GridOn(Grid1, player1, player2_enemy);
+                    PlayComp.SpisokVizual(player2, spisok2);
+                } else {
+                    player1.setAIturn(true);
+                    ButtonOnPlay.setActive(true);
+                    PlayComp.GridReset(Grid1);
+                    PlayComp.GridOn(Grid1, player1, player2_enemy);
+                    return;
+                }
+        }
+//        if (player1.getShipList().stream().filter(z -> z.getHealth() != 0).count() != 0) {
+//
+//            exit.setVisible(true);
+//            exit.setText("Поздравляем " + player1.getName() + " победил\n" +
+//                    "нажмите на кнопку чтобы закончить");
+//        } else if (player2.getShipList().stream().filter(z -> z.getHealth() != 0).count() != 0) {
+//            exit.setVisible(true);
+//            exit.setText("Поздравляем " + player2.getName() + " победил\n" +
+//                    "нажмите на кнопку чтобы закончить");
+//            }
+       }
     }
 
     @FXML
@@ -93,34 +140,35 @@ public class Controller_CompVsHuman implements Initializable {
         stage.close();
     }
 
-    @FXML
-    public static void LetsBattle(Anketa player1,Anketa player1_enemy,Anketa player2, Anketa player2_enemy,
-                                  TextArea messageWindow,Button exit, int x, int y) {
-        while(true){
-            if (player1.isAIturn()) {
-                if (player2.getField()[x][y]==1){
-                   CheckFireUser(x,y,player1,player1_enemy,player2,messageWindow);
-                } else {
-                    player1.setAIturn(false);
-                }
-            } else {
-                PlayComp.LetsPlay(player2, player2_enemy, player1, messageWindow);
-                if (PlayComp.ShipChecked(x, y, player2_enemy,player1).equalsIgnoreCase("попал")
-                        ||PlayComp.ShipChecked(x, y, player2_enemy,player1).equalsIgnoreCase("убил")){
-
-            }
-        }
-        if (player1.getShipList().stream().filter(z -> z.getHealth() != 0).count() != 0) {
-            exit.setVisible(true);
-            exit.setText("Поздравляем " + player1.getName() + " победил\n" +
-                    "нажмите на кнопку чтобы закончить");
-        } else if (player2.getShipList().stream().filter(z -> z.getHealth() != 0).count() != 0) {
-            exit.setVisible(true);
-            exit.setText("Поздравляем " + player2.getName() + " победил\n" +
-                    "нажмите на кнопку чтобы закончить");
-            }
-        }
-    }
+//    public static void LetsBattle(Anketa player1,Anketa player1_enemy,Anketa player2, Anketa player2_enemy,
+//                                  int x, int y) {
+//
+//        while(true){
+//            if (player1.isAIturn()) {
+//                if (player2.getField()[x][y]==1){
+//                   CheckFireUser(x,y,player1,player1_enemy,player2,messageWindowNew);
+//                } else {
+//                    player1.setAIturn(false);
+//                }
+//            } else {
+//                PlayComp.LetsPlay(player2, player2_enemy, player1, messageWindowNew);
+//                if (PlayComp.ShipChecked(x, y, player2_enemy,player1).equalsIgnoreCase("попал")
+//                        ||PlayComp.ShipChecked(x, y, player2_enemy,player1).equalsIgnoreCase("убил")){
+//
+//            }
+//        }
+//        if (player1.getShipList().stream().filter(z -> z.getHealth() != 0).count() != 0) {
+//
+//            exitNew.setVisible(true);
+//            exitNew.setText("Поздравляем " + player1.getName() + " победил\n" +
+//                    "нажмите на кнопку чтобы закончить");
+//        } else if (player2.getShipList().stream().filter(z -> z.getHealth() != 0).count() != 0) {
+//            exitNew.setVisible(true);
+//            exitNew.setText("Поздравляем " + player2.getName() + " победил\n" +
+//                    "нажмите на кнопку чтобы закончить");
+//            }
+//        }
+//    }
 
     @FXML
     public static void CheckFireUser(int x,int y,Anketa p1, Anketa p1_enemy, Anketa p2,TextArea messageWindow){
@@ -140,5 +188,17 @@ public class Controller_CompVsHuman implements Initializable {
         }
         messageWindow.setText(p1.getName()+" выбрал координаты " + XA[x] +
                 (y+1) + "-" + text);
+    }
+
+    public static void setXplayer(int xplayer) {
+        Controller_CompVsHuman.xplayer = xplayer;
+    }
+
+    public static void setYplayer(int yplayer) {
+        Controller_CompVsHuman.yplayer = yplayer;
+    }
+
+    public static void setTextship(String textship) {
+        Controller_CompVsHuman.textship = textship;
     }
 }

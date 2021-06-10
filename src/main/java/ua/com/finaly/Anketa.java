@@ -1,6 +1,7 @@
 package ua.com.finaly;
 
 import ua.com.finaly.Player.ButtonOnGrid;
+import ua.com.finaly.Player.ButtonOnPlay;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class Anketa implements Serializable {
     private ArrayList<ShipClass> shipList = new ArrayList<>();
     private ArrayList<Integer> AILogic = new ArrayList<>();
     private ArrayList<ButtonOnGrid> buttonplayer = new ArrayList<>();
+    private ArrayList<ButtonOnPlay> buttonplay = new ArrayList<>();
     private boolean AILogicOn = false;
     private boolean AIturn = false;
 
@@ -132,5 +134,13 @@ public class Anketa implements Serializable {
 
     public void setButtonplayer(ArrayList<ButtonOnGrid> buttonplayer) {
         this.buttonplayer = buttonplayer;
+    }
+
+    public ArrayList<ButtonOnPlay> getButtonplay() {
+        return buttonplay;
+    }
+
+    public void setButtonplay(ArrayList<ButtonOnPlay> buttonplay) {
+        this.buttonplay = buttonplay;
     }
 }

@@ -12,8 +12,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ua.com.finaly.*;
-import ua.com.finaly.Demo.CompLogic;
-import ua.com.finaly.Demo.PlayComp;
+import ua.com.finaly.Player.CompLogic;
+import ua.com.finaly.Player.PlayComp;
 import ua.com.finaly.Player.ButtonOnGrid;
 import ua.com.finaly.Player.CreateShip;
 
@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-import static javafx.scene.paint.Color.BLACK;
 import static javafx.scene.paint.Color.RED;
 
 public class Controller_HumanInizial implements Initializable {
@@ -130,6 +129,7 @@ public class Controller_HumanInizial implements Initializable {
             }
             textmistake.setText(text);
         }
+
     }
 
     private void ShipText() {
@@ -143,6 +143,7 @@ public class Controller_HumanInizial implements Initializable {
     @FXML
     private void onClickName(ActionEvent actionEvent) {
         name.setText(nameEnter.getText());
+        player1.setName(name.getText());
     }
 
     @FXML
@@ -157,6 +158,21 @@ public class Controller_HumanInizial implements Initializable {
 
     @FXML
     private void onClickReadyGo(ActionEvent actionEvent) throws IOException {
+        for (ShipClass x: player1.getShipList()){
+            for (int i=0;i<x.getShip().size();i+=2){
+                player1.getField()[x.getShip().get(i+1)-1][x.getShip().get(i)-1]=1;
+            }
+        }
+
+        for (ShipClass x: player1.getShipList()) {
+            for (int i = 0; i < x.getAura().size(); i += 2) {
+                try {
+                    player1.getField()[x.getAura().get(i+1) - 1][x.getAura().get(i) - 1] = 4;
+                } catch (ArrayIndexOutOfBoundsException e) {
+
+                }
+            }
+        }
         Stage stage= Start.getPStage();
         FXMLLoader loader=new FXMLLoader();
         loader.setLocation(getClass().getClassLoader().getResource("CompvsHuman.fxml"));
