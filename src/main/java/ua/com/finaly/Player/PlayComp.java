@@ -18,7 +18,7 @@ public class PlayComp {
     private static String ship="⛵";
     private static String shipEmpty="✖";
 
-    public static void LetsPlay(Anketa player2, Anketa player2_enemy,Anketa player1, TextArea messageWindow) {
+    public static void CheckFireComp(Anketa player2, Anketa player2_enemy,Anketa player1, TextArea messageWindow) {
             Random random = new Random();
             while (true){
             if (player2.isAILogicOn()) {
@@ -36,6 +36,7 @@ public class PlayComp {
     }
 
     public static String ShipChecked(int x, int y,Anketa player1_enemy,Anketa player2){
+        String text=" ";
         for (ShipClass shipcounter:player2.getShipList()){
             for (int i=0;i<shipcounter.getShip().size();i+=2){
                 if (shipcounter.getShip().get(i)==x&&shipcounter.getShip().get(i+1)==y){
@@ -50,13 +51,15 @@ public class PlayComp {
                             player1_enemy.getField()[temp[j]][temp[j+1]]=2;
                         }
                         Controller_CompVsHuman.setTextship("убил");
-                        return "убил";
+                        text="убил";
+                    } else {
+                        Controller_CompVsHuman.setTextship("попал");
+                        text="попал";
                     }
                 }
             }
         }
-        Controller_CompVsHuman.setTextship("попал");
-        return "попал";
+       return text;
     }
 
     public static void AIOff(int x,int y,Anketa player2, Anketa player2_enemy, Anketa player1,TextArea messageWindow){
@@ -64,7 +67,7 @@ public class PlayComp {
         String text;
         if (player1.getField()[x][y] == 1) {
             player2_enemy.getField()[x][y] = 3;
-            text = ShipChecked(x, y, player2_enemy,player1);
+            text = ShipChecked(x+1, y+1, player2_enemy,player1);
             if (text.equals("попал")){
                 player2.setAILogicOn(true);
                 AICoordinateFuture(x,y,player2,player2_enemy);
@@ -76,7 +79,7 @@ public class PlayComp {
             player1.setAIturn(true);
         }
         messageWindow.setText(player2.getName()+" выбрал координаты " + XA[x] +
-                (y+1) + "-" + text);
+                (y+1) + "-" + text + "/" + player2.getAILogic());
     }
 
     public static void AIOn(Anketa p2, Anketa p2_enemy, Anketa p1, TextArea messageWindow){
@@ -85,7 +88,6 @@ public class PlayComp {
         int x;
         int y;
         Random random = new Random();
-
         if (p2.getAILogic().size()==2){
             x=p2.getAILogic().get(0);
             y=p2.getAILogic().get(1);
@@ -210,17 +212,6 @@ public class PlayComp {
         }catch (IndexOutOfBoundsException e){
         }
         System.out.println(p2.getAILogic());
-    }
-
-    public static void GridVizual(GridPane Grid1, GridPane Grid2,Anketa pl1, Anketa pl1_enemy, Anketa pl2,
-                                  Anketa pl2_enemy, TextArea spisok1, TextArea spisok2){
-
-        GridReset(Grid1);
-        GridReset(Grid2);
-        GridOn(Grid1, pl1, pl2_enemy);
-        GridOn(Grid2, pl2, pl1_enemy);
-        SpisokVizual(pl1, spisok1);
-        SpisokVizual(pl2, spisok2);
     }
 
     public static void GridVizualwithHuman(GridPane Grid1, GridPane Grid2,Anketa pl1, Anketa pl1_enemy, Anketa pl2,

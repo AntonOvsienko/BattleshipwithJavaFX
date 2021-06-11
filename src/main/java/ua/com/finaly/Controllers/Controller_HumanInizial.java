@@ -158,21 +158,28 @@ public class Controller_HumanInizial implements Initializable {
 
     @FXML
     private void onClickReadyGo(ActionEvent actionEvent) throws IOException {
+
+        for(int i=0;i<player1.getShipList().size();i++){
+            player1.getShipList().(player1.getShipList().get(i).getShip().stream().mapToInt(p->p-1));
+            System.out.println(player1.getShipList().get(i));
+        }
+
         for (ShipClass x: player1.getShipList()){
             for (int i=0;i<x.getShip().size();i+=2){
-                player1.getField()[x.getShip().get(i+1)-1][x.getShip().get(i)-1]=1;
+                player1.getField()[x.getShip().get(i+1)][x.getShip().get(i)]=1;
             }
         }
 
         for (ShipClass x: player1.getShipList()) {
             for (int i = 0; i < x.getAura().size(); i += 2) {
                 try {
-                    player1.getField()[x.getAura().get(i+1) - 1][x.getAura().get(i) - 1] = 4;
+                    player1.getField()[x.getAura().get(i+1)][x.getAura().get(i)] = 4;
                 } catch (ArrayIndexOutOfBoundsException e) {
 
                 }
             }
         }
+        System.out.println(player2);
         Stage stage= Start.getPStage();
         FXMLLoader loader=new FXMLLoader();
         loader.setLocation(getClass().getClassLoader().getResource("CompvsHuman.fxml"));

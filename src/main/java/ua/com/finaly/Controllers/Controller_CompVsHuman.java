@@ -14,11 +14,18 @@ import javafx.stage.Stage;
 import ua.com.finaly.Anketa;
 import ua.com.finaly.Player.PlayComp;
 import ua.com.finaly.Player.ButtonOnPlay;
+import ua.com.finaly.ShipClass;
 import ua.com.finaly.Start;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
+import static ua.com.finaly.Player.PlayComp.*;
 
 
 public class Controller_CompVsHuman implements Initializable {
@@ -95,33 +102,21 @@ public class Controller_CompVsHuman implements Initializable {
                    return;
                 } else {
                     player1.setAIturn(false);
+                    player2.setAIturn(true);
                 }
             } else {
-                PlayComp.LetsPlay(player2, player2_enemy, player1, messageWindow);
-                if (textship.equalsIgnoreCase("попал")
-                        ||textship.equalsIgnoreCase("убил")){
-                    PlayComp.GridReset(Grid1);
-                    PlayComp.GridOn(Grid1, player1, player2_enemy);
-                    PlayComp.SpisokVizual(player2, spisok2);
+                CheckFireComp(player2, player2_enemy, player1, messageWindow);
+                GridReset(Grid1);
+                GridOn(Grid1, player1, player2_enemy);
+                if (player2.isAIturn()){
+                    continue;
                 } else {
                     player1.setAIturn(true);
                     ButtonOnPlay.setActive(true);
-                    PlayComp.GridReset(Grid1);
-                    PlayComp.GridOn(Grid1, player1, player2_enemy);
                     return;
                 }
+            }
         }
-//        if (player1.getShipList().stream().filter(z -> z.getHealth() != 0).count() != 0) {
-//
-//            exit.setVisible(true);
-//            exit.setText("Поздравляем " + player1.getName() + " победил\n" +
-//                    "нажмите на кнопку чтобы закончить");
-//        } else if (player2.getShipList().stream().filter(z -> z.getHealth() != 0).count() != 0) {
-//            exit.setVisible(true);
-//            exit.setText("Поздравляем " + player2.getName() + " победил\n" +
-//                    "нажмите на кнопку чтобы закончить");
-//            }
-       }
     }
 
     @FXML
@@ -140,35 +135,6 @@ public class Controller_CompVsHuman implements Initializable {
         stage.close();
     }
 
-//    public static void LetsBattle(Anketa player1,Anketa player1_enemy,Anketa player2, Anketa player2_enemy,
-//                                  int x, int y) {
-//
-//        while(true){
-//            if (player1.isAIturn()) {
-//                if (player2.getField()[x][y]==1){
-//                   CheckFireUser(x,y,player1,player1_enemy,player2,messageWindowNew);
-//                } else {
-//                    player1.setAIturn(false);
-//                }
-//            } else {
-//                PlayComp.LetsPlay(player2, player2_enemy, player1, messageWindowNew);
-//                if (PlayComp.ShipChecked(x, y, player2_enemy,player1).equalsIgnoreCase("попал")
-//                        ||PlayComp.ShipChecked(x, y, player2_enemy,player1).equalsIgnoreCase("убил")){
-//
-//            }
-//        }
-//        if (player1.getShipList().stream().filter(z -> z.getHealth() != 0).count() != 0) {
-//
-//            exitNew.setVisible(true);
-//            exitNew.setText("Поздравляем " + player1.getName() + " победил\n" +
-//                    "нажмите на кнопку чтобы закончить");
-//        } else if (player2.getShipList().stream().filter(z -> z.getHealth() != 0).count() != 0) {
-//            exitNew.setVisible(true);
-//            exitNew.setText("Поздравляем " + player2.getName() + " победил\n" +
-//                    "нажмите на кнопку чтобы закончить");
-//            }
-//        }
-//    }
 
     @FXML
     public static void CheckFireUser(int x,int y,Anketa p1, Anketa p1_enemy, Anketa p2,TextArea messageWindow){
@@ -186,9 +152,22 @@ public class Controller_CompVsHuman implements Initializable {
             p1_enemy.getField()[x][y] = 2;
             text = "мимо";
         }
+        if (text.equals("убил")){
+            List<ShipClass> shipdestroy=p2.getShipList().stream().filter(i->i.isLife()!=true).collect(Collectors.toList());
+            for (ShipClass aura:shipdestroy){
+                for (int i=0;i<aura.getAura().size();i+=2) {
+                    int finalI = i;
+                    p1.getButtonplay().stream()
+                        .filter(p->p.getX()==aura.getAura().get(finalI))
+                        .filter(p->p.getY()==aura.getAura().get(finalI+1))
+                        .forEach(p->p.setVisible(false));
+                }
+                }
+            }
         messageWindow.setText(p1.getName()+" выбрал координаты " + XA[x] +
                 (y+1) + "-" + text);
     }
+
 
     public static void setXplayer(int xplayer) {
         Controller_CompVsHuman.xplayer = xplayer;
