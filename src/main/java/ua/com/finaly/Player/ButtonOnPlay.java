@@ -5,16 +5,17 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import ua.com.finaly.Controllers.Controller_CompVsHuman;
+import ua.com.finaly.Controllers.Controller_HumanVsHuman;
 
 public class ButtonOnPlay extends Button {
 
     private int x;
     private int y;
-    private static boolean active=true;
+    private static boolean active = true;
 
-    public ButtonOnPlay(int x,int y){
-        this.x=x;
-        this.y=y;
+    public ButtonOnPlay(int x, int y) {
+        this.x = x;
+        this.y = y;
         this.setDisable(false);
         this.setPrefHeight(0);
         this.setPrefWidth(0);
@@ -28,22 +29,24 @@ public class ButtonOnPlay extends Button {
 
         this.setOnAction(actionEvent -> {
             try {
-                if (active){
+                if (active) {
                     onClick(actionEvent);
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         });
-        this.setPadding(new Insets(1,1,1,1));
+        this.setPadding(new Insets(1, 1, 1, 1));
     }
 
     private void onClick(ActionEvent actionEvent) throws InterruptedException {
         this.setText("•");
 //        this.setDisable(true);
-        active=false;
+        active = false;
         Controller_CompVsHuman.setXplayer(x);
         Controller_CompVsHuman.setYplayer(y);
+        Controller_HumanVsHuman.setXplayer(x);
+        Controller_HumanVsHuman.setYplayer(y);
     }
 
     public static boolean isActive() {
@@ -62,3 +65,4 @@ public class ButtonOnPlay extends Button {
         return y;
     }
 }
+

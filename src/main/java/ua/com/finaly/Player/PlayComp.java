@@ -225,6 +225,16 @@ public class PlayComp {
         SpisokVizual(pl2, spisok2);
     }
 
+    public static void GridVizualonlyHuman(GridPane Grid1, GridPane Grid2, Anketa pl1, Anketa pl2, TextArea spisok1, TextArea spisok2) {
+
+        GridReset(Grid1);
+        GridReset(Grid2);
+        GridOnComp(Grid1, pl1, pl2);
+        GridOnComp(Grid2, pl2, pl1);
+        SpisokVizual(pl1, spisok1);
+        SpisokVizual(pl2, spisok2);
+    }
+
     public static void SpisokVizual(Anketa pl2, TextArea spisok2) {
         spisok2.setText(ship + "             -" + pl2.getShipList().stream().filter(x -> x.getPosition().size() == 2).filter(x -> x.getHealth() != 0).count() + "шт" +
                 "\n" + ship + ship + "          -" + pl2.getShipList().stream().filter(x -> x.getPosition().size() == 4).filter(x -> x.getHealth() != 0).count() + "шт" +
@@ -236,7 +246,7 @@ public class PlayComp {
         grid.setGridLinesVisible(false);
         grid.getChildren().clear();
         grid.setGridLinesVisible(true);
-        String[] vertikal = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "G"};
+        String[] vertikal = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
         String[] gorizont = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
         for (int i = 1; i < 11; i++) {
             Label tfg = new Label();

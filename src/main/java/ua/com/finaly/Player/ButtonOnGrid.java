@@ -51,27 +51,6 @@ public class ButtonOnGrid extends Button {
         }
     }
 
-    public void AIOff(int x, int y, Anketa player1, Anketa player1_enemy, Anketa player2){
-        String[] XA={"A","B","C","D","E","F","G","H","I","G"};
-        String text;
-        if (player2.getField()[x-1][y-1] == 1) {
-            player1_enemy.getField()[x-1][y-1] = 3;
-            text = ShipChecked(x, y, player1_enemy,player2);
-            if (text.equals("попал")){
-                player1.setAILogicOn(true);
-            }
-        } else {
-            player1_enemy.getField()[x-1][y-1] = 2;
-            text = "мимо";
-            player1.setAIturn(false);
-            player2.setAIturn(true);
-        }
-        System.out.println(player1.getName()+" выбрал координаты " + XA[x-1] +
-                y + "-" + text);
-//        setMessageWindow.setText(player1.getName()+" выбрал координаты " + XA[x] +
-//                (y+1) + "-" + text);
-    }
-
     public int getX() {
         return x;
     }
@@ -96,3 +75,4 @@ public class ButtonOnGrid extends Button {
         this.ship = ship;
     }
 }
+

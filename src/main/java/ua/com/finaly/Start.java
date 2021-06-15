@@ -9,6 +9,10 @@ import javafx.stage.Stage;
 public class Start extends Application {
     private static Stage PStage;
 
+    public static void main(String[] args) throws InterruptedException {
+        Application.launch();
+    }
+
     @Override
     public void stop() throws Exception {
         super.stop();
@@ -24,14 +28,6 @@ public class Start extends Application {
         stage.setScene(scene);
         stage.show();
 
-    }
-
-    public static void main(String[] args) throws InterruptedException {
-        Application.launch();
-    }
-
-    public static void Finally(Anketa player1){
-        System.out.println("Игрок " + player1.getName() + " победил");
     }
 
     public static Stage getPStage() {

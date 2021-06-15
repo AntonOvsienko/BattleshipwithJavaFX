@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class Controller_Start implements Initializable{
+public class Controller_Start implements Initializable {
 
     @FXML
     private Button button1;
@@ -29,7 +29,11 @@ public class Controller_Start implements Initializable{
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         button1.setOnAction(actionEvent -> {
-
+            try {
+                onClickHumanVsHuman(actionEvent);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
         button2.setOnAction(actionEvent -> {
@@ -50,8 +54,8 @@ public class Controller_Start implements Initializable{
 
     @FXML
     private void onClickCompVsComp(ActionEvent actionEvent) throws IOException {
-        Stage stage= Start.getPStage();
-        FXMLLoader loader=new FXMLLoader();
+        Stage stage = Start.getPStage();
+        FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getClassLoader().getResource("CompsvsComps.fxml"));
         Pane root = loader.load();
         Scene scene = new Scene(root, 700.0D, 500.0D);
@@ -60,9 +64,19 @@ public class Controller_Start implements Initializable{
 
     @FXML
     private void onClickCompVsHuman(ActionEvent actionEvent) throws IOException {
-        Stage stage= Start.getPStage();
-        FXMLLoader loader=new FXMLLoader();
+        Stage stage = Start.getPStage();
+        FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getClassLoader().getResource("HumanInizial.fxml"));
+        Pane root = loader.load();
+        Scene scene = new Scene(root, 700.0D, 500.0D);
+        stage.setScene(scene);
+    }
+
+    @FXML
+    private void onClickHumanVsHuman(ActionEvent actionEvent) throws IOException {
+        Stage stage = Start.getPStage();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getClassLoader().getResource("HumanInizialPlayer1_Player2.fxml"));
         Pane root = loader.load();
         Scene scene = new Scene(root, 700.0D, 500.0D);
         stage.setScene(scene);
