@@ -56,9 +56,9 @@ public class Controller_CompVsHuman implements Initializable {
     Anketa player1_enemy = Controller_HumanInizial.getPlayer1_enemy();
     Anketa player2_enemy = Controller_HumanInizial.getPlayer2_enemy();
 
-    private static int xplayer=0;
-    private static int yplayer=0;
-    private static String textship=" ";
+    private static int xplayer = 0;
+    private static int yplayer = 0;
+    private static String textship = " ";
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -69,8 +69,8 @@ public class Controller_CompVsHuman implements Initializable {
         player2.setAIturn(!player1.isAIturn());
         PlayComp.GridVizualwithHuman(Grid1, Grid2, player1, player1_enemy, player2, player2_enemy, spisok1, spisok2);
 
-        exit.setOnAction(actionEvent1 -> {
-            onClickExit(actionEvent1);
+        exit.setOnAction(actionEvent -> {
+            onClickExit(actionEvent);
         });
 
         restart.setOnAction(actionEvent -> {
@@ -82,24 +82,30 @@ public class Controller_CompVsHuman implements Initializable {
         });
 
         choiceCoil.setOnAction(actionEvent1 -> {
-            if (!ButtonOnPlay.isActive()){
+            if (!ButtonOnPlay.isActive()) {
                 player1.getButtonplay().stream()
-                        .filter(x->x.getX()==xplayer)
-                        .filter(y->y.getY()==yplayer)
-                        .forEach(x->x.setDisable(true));
+                        .filter(x -> x.getX() == xplayer)
+                        .filter(y -> y.getY() == yplayer)
+                        .forEach(x -> x.setDisable(true));
                 onChoiceCoil(actionEvent1);
             }
         });
     }
+
     @FXML
     private void onChoiceCoil(ActionEvent actionEvent1) {
-        while(true){
+        while (true) {
             if (player1.isAIturn()) {
-                if (player2.getField()[xplayer-1][yplayer-1]==1){
-                   CheckFireUser(xplayer-1,yplayer-1,player1,player1_enemy,player2,messageWindow);
-                   PlayComp.SpisokVizual(player1, spisok1);
-                   ButtonOnPlay.setActive(true);
-                   return;
+                if (player2.getField()[xplayer - 1][yplayer - 1] == 1) {
+                    CheckFireUser(xplayer - 1, yplayer - 1, player1, player1_enemy, player2, messageWindow);
+                    PlayComp.SpisokVizual(player2, spisok2);
+                    ButtonOnPlay.setActive(true);
+                    if (player2.getShipList().stream().filter(t -> t.isLife() == true).count() == 0) {
+                        exit.setVisible(true);
+                        choiceCoil.setDisable(true);
+                        finish(player1, exit);
+                    }
+                    return;
                 } else {
                     player1.setAIturn(false);
                     player2.setAIturn(true);
@@ -108,7 +114,13 @@ public class Controller_CompVsHuman implements Initializable {
                 CheckFireComp(player2, player2_enemy, player1, messageWindow);
                 GridReset(Grid1);
                 GridOn(Grid1, player1, player2_enemy);
-                if (player2.isAIturn()){
+                PlayComp.SpisokVizual(player1,spisok1);
+                if (player1.getShipList().stream().filter(t -> t.isLife() == true).count() == 0) {
+                    exit.setVisible(true);
+                    choiceCoil.setDisable(true);
+                    finish(player2, exit);
+                }
+                if (player2.isAIturn()) {
                     continue;
                 } else {
                     player1.setAIturn(true);
@@ -129,21 +141,22 @@ public class Controller_CompVsHuman implements Initializable {
         stage.setScene(scene);
 
     }
+
     @FXML
-    private void onClickExit (ActionEvent actionEvent){
+    private void onClickExit(ActionEvent actionEvent) {
         Stage stage = Start.getPStage();
         stage.close();
     }
 
 
     @FXML
-    public static void CheckFireUser(int x,int y,Anketa p1, Anketa p1_enemy, Anketa p2,TextArea messageWindow){
-        String[] XA={"A","B","C","D","E","F","G","H","I","G"};
+    public static void CheckFireUser(int x, int y, Anketa p1, Anketa p1_enemy, Anketa p2, TextArea messageWindow) {
+        String[] XA = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "G"};
         String text;
         if (p2.getField()[x][y] == 1) {
             p1_enemy.getField()[x][y] = 3;
-            text = PlayComp.ShipChecked(x, y, p1_enemy,p2);
-            if (text.equals("попал")){
+            text = PlayComp.ShipChecked(x, y, p1_enemy, p2);
+            if (text.equals("попал")) {
             } else {
                 p1.setAILogicOn(false);
                 p1.getAILogic().clear();
@@ -152,22 +165,26 @@ public class Controller_CompVsHuman implements Initializable {
             p1_enemy.getField()[x][y] = 2;
             text = "мимо";
         }
-        if (text.equals("убил")){
-            List<ShipClass> shipdestroy=p2.getShipList().stream().filter(i->i.isLife()!=true).collect(Collectors.toList());
-            for (ShipClass aura:shipdestroy){
-                for (int i=0;i<aura.getAura().size();i+=2) {
+        if (text.equals("убил")) {
+            List<ShipClass> shipdestroy = p2.getShipList().stream().filter(i -> i.isLife() != true).collect(Collectors.toList());
+            for (ShipClass aura : shipdestroy) {
+                for (int i = 0; i < aura.getAura().size(); i += 2) {
                     int finalI = i;
                     p1.getButtonplay().stream()
-                        .filter(p->p.getX()==aura.getAura().get(finalI))
-                        .filter(p->p.getY()==aura.getAura().get(finalI+1))
-                        .forEach(p->p.setVisible(false));
-                }
+                            .filter(p -> p.getX() == aura.getAura().get(finalI) + 1)
+                            .filter(p -> p.getY() == aura.getAura().get(finalI + 1) + 1)
+                            .forEach(p -> p.setVisible(false));
                 }
             }
-        messageWindow.setText(p1.getName()+" выбрал координаты " + XA[x] +
-                (y+1) + "-" + text);
+        }
+        messageWindow.setText(p1.getName() + " выбрал координаты " + XA[x] +
+                (y + 1) + "-" + text);
     }
 
+    @FXML
+    public static void finish(Anketa player, Button exit) {
+        exit.setText("Игрок-" + player.getName() + ",победил нажмите для выхода");
+    }
 
     public static void setXplayer(int xplayer) {
         Controller_CompVsHuman.xplayer = xplayer;

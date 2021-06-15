@@ -13,12 +13,12 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ua.com.finaly.*;
 import ua.com.finaly.Player.CompLogic;
-import ua.com.finaly.Player.PlayComp;
 import ua.com.finaly.Player.ButtonOnGrid;
 import ua.com.finaly.Player.CreateShip;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -27,7 +27,7 @@ import static javafx.scene.paint.Color.RED;
 
 public class Controller_HumanInizial implements Initializable {
 
-    private static String ship="⛵";
+    private static String ship = "⛵";
 
     @FXML
     private GridPane Grid1;
@@ -71,7 +71,7 @@ public class Controller_HumanInizial implements Initializable {
         player2.setName("Basic");
 
         ShipText();
-        Initialization.GridStart(player1,Grid1);
+        Initialization.GridStart(player1, Grid1);
         CompLogic.Initial(player2);
 
         buttonname.setOnAction(this::onClickName);
@@ -97,11 +97,11 @@ public class Controller_HumanInizial implements Initializable {
 
     @FXML
     private void onClickReady(ActionEvent actionEvent) {
-        List<ButtonOnGrid> buttonship=player1.getButtonplayer().stream().
-                filter(x->x.getText().equals(ship)).collect(Collectors.toList());
-        CreateShip.Create(buttonship,player1);
-        for (ShipClass x:player1.getShipList()){
-            for (ShipClass y:player1.getShipList()){
+        List<ButtonOnGrid> buttonship = player1.getButtonplayer().stream().
+                filter(x -> x.getText().equals(ship)).collect(Collectors.toList());
+        CreateShip.Create(buttonship, player1);
+        for (ShipClass x : player1.getShipList()) {
+            for (ShipClass y : player1.getShipList()) {
                 if (x.shipChecked(y.getAura())) {
                     x.setLife(true);
                 } else {
@@ -110,34 +110,35 @@ public class Controller_HumanInizial implements Initializable {
                 }
             }
         }
-        Initialization.GridTwoButton(player1,Grid1);
+        Initialization.GridTwoButton(player1, Grid1);
         ShipText();
-        if (player1.getShipList().stream().filter(x-> x.isLife()).count()==10){
+        if (player1.getShipList().stream().filter(x -> x.isLife()).count() == 10) {
             textmistake.setText("");
             ReadyGo.setVisible(true);
         } else {
-            String text="";
+            String text = "";
             textmistake.setFill(RED);
-            text+="Ошибка\n";
+            text += "Ошибка\n";
             ReadyGo.setVisible(false);
-            if (player1.getShipList().size()!=10){
-                text+="Не все корабли расставлены\n";
+            if (player1.getShipList().size() != 10) {
+                text += "Не все корабли расставлены\n";
             }
-            if (player1.getShipList().size()==10&&player1.getShipList().stream().filter(x-> x.isLife()).count()!=10||
-                    player1.getShipList().stream().filter(x-> x.isLife()==false).count()>0){
-                text+="Корабли пересекаются\n";
+            if (player1.getShipList().size() == 10 && player1.getShipList().stream().filter(x -> x.isLife()).count() != 10 ||
+                    player1.getShipList().stream().filter(x -> x.isLife() == false).count() > 0) {
+                text += "Корабли пересекаются\n";
             }
             textmistake.setText(text);
         }
 
     }
 
+    @FXML
     private void ShipText() {
         textmanual.setText("Укажите расположение кораблей и нажимайте 'Готово'" +
-                "\n" + ship + " - " + player1.getShipList().stream().filter(x->x.getShip().size()==2).filter(x->x.isLife()).count() + "шт" +
-                "\n" + ship + ship + " - " + player1.getShipList().stream().filter(x->x.getShip().size()==4).filter(x->x.isLife()).count() + "шт" +
-                "\n" + ship + ship + ship + " - " + player1.getShipList().stream().filter(x->x.getShip().size()==6).filter(x->x.isLife()).count() + "шт" +
-                "\n" + ship + ship + ship + ship + " - " +player1.getShipList().stream().filter(x->x.getShip().size()==8).filter(x->x.isLife()).count() + "шт");
+                "\n" + ship + " - " + player1.getShipList().stream().filter(x -> x.getPosition().size() == 2).filter(x -> x.isLife()).count() + "шт" +
+                "\n" + ship + ship + " - " + player1.getShipList().stream().filter(x -> x.getPosition().size() == 4).filter(x -> x.isLife()).count() + "шт" +
+                "\n" + ship + ship + ship + " - " + player1.getShipList().stream().filter(x -> x.getPosition().size() == 6).filter(x -> x.isLife()).count() + "шт" +
+                "\n" + ship + ship + ship + ship + " - " + player1.getShipList().stream().filter(x -> x.getPosition().size() == 8).filter(x -> x.isLife()).count() + "шт");
     }
 
     @FXML
@@ -159,29 +160,37 @@ public class Controller_HumanInizial implements Initializable {
     @FXML
     private void onClickReadyGo(ActionEvent actionEvent) throws IOException {
 
-        for(int i=0;i<player1.getShipList().size();i++){
-            player1.getShipList().(player1.getShipList().get(i).getShip().stream().mapToInt(p->p-1));
-            System.out.println(player1.getShipList().get(i));
+        for (ShipClass ship:player1.getShipList()) {
+            ship.setPosition(ship.getPosition().stream().map(p -> p - 1).collect(Collectors.toList()));
+            ship.setAura(ship.getAura().stream().map(p -> p - 1).collect(Collectors.toList()));
+            System.out.println(ship);
         }
 
-        for (ShipClass x: player1.getShipList()){
-            for (int i=0;i<x.getShip().size();i+=2){
-                player1.getField()[x.getShip().get(i+1)][x.getShip().get(i)]=1;
+        for (ShipClass ship:player2.getShipList()) {
+            ship.setPosition(ship.getPosition().stream().map(p -> p - 1).collect(Collectors.toList()));
+            ship.setAura(ship.getAura().stream().map(p -> p - 1).collect(Collectors.toList()));
+            System.out.println(ship);
+        }
+
+        for (ShipClass x : player1.getShipList()) {
+            for (int i = 0; i < x.getPosition().size(); i += 2) {
+                player1.getField()[x.getPosition().get(i)][x.getPosition().get(i+1)] = 1;
             }
         }
 
-        for (ShipClass x: player1.getShipList()) {
+        for (ShipClass x : player1.getShipList()) {
             for (int i = 0; i < x.getAura().size(); i += 2) {
                 try {
-                    player1.getField()[x.getAura().get(i+1)][x.getAura().get(i)] = 4;
+                    player1.getField()[x.getAura().get(i)][x.getAura().get(i+1)] = 4;
                 } catch (ArrayIndexOutOfBoundsException e) {
 
                 }
             }
         }
+
         System.out.println(player2);
-        Stage stage= Start.getPStage();
-        FXMLLoader loader=new FXMLLoader();
+        Stage stage = Start.getPStage();
+        FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getClassLoader().getResource("CompvsHuman.fxml"));
         Pane root = loader.load();
         Scene scene = new Scene(root, 700.0D, 500.0D);

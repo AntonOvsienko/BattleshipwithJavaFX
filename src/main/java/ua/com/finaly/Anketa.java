@@ -5,8 +5,9 @@ import ua.com.finaly.Player.ButtonOnPlay;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
-public class Anketa implements Serializable {
+public class Anketa{
     private int[][] field;
     private String name;
     private int count4;
@@ -14,7 +15,7 @@ public class Anketa implements Serializable {
     private int count2;
     private int count1;
     private int hitpoint;
-    private ArrayList<ShipClass> shipList = new ArrayList<>();
+    private List<ShipClass> shipList = new ArrayList<>();
     private ArrayList<Integer> AILogic = new ArrayList<>();
     private ArrayList<ButtonOnGrid> buttonplayer = new ArrayList<>();
     private ArrayList<ButtonOnPlay> buttonplay = new ArrayList<>();
@@ -96,11 +97,11 @@ public class Anketa implements Serializable {
         this.hitpoint = hitpoint;
     }
 
-    public ArrayList<ShipClass> getShipList() {
+    public List<ShipClass> getShipList() {
         return shipList;
     }
 
-    public void setShipList(ArrayList<ShipClass> shipList) {
+    public void setShipList(List<ShipClass> shipList) {
         this.shipList = shipList;
     }
 
@@ -143,4 +144,5 @@ public class Anketa implements Serializable {
     public void setButtonplay(ArrayList<ButtonOnPlay> buttonplay) {
         this.buttonplay = buttonplay;
     }
+
 }

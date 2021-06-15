@@ -1,8 +1,6 @@
 package ua.com.finaly.Demo;
 
-import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
@@ -11,8 +9,6 @@ import ua.com.finaly.Controllers.Controller_CompVsHuman;
 import ua.com.finaly.Player.ButtonOnPlay;
 import ua.com.finaly.ShipClass;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import static javafx.scene.paint.Color.BLACK;
@@ -44,8 +40,8 @@ public class PlayComp {
 
     public static String ShipChecked(int x, int y,Anketa player1_enemy,Anketa player2){
         for (ShipClass shipcounter:player2.getShipList()){
-            for (int i=0;i<shipcounter.getShip().size();i+=2){
-                if (shipcounter.getShip().get(i)==x&&shipcounter.getShip().get(i+1)==y){
+            for (int i = 0; i<shipcounter.getPosition().size(); i+=2){
+                if (shipcounter.getPosition().get(i)==x&&shipcounter.getPosition().get(i+1)==y){
                     shipcounter.setHealth(shipcounter.getHealth()-1);
                     if (shipcounter.getHealth()==0){
                         shipcounter.setLife(false);
@@ -242,10 +238,10 @@ public class PlayComp {
     }
 
     public static void SpisokVizual(Anketa pl2, TextArea spisok2) {
-        spisok2.setText(ship +"             -" + pl2.getShipList().stream().filter(x->x.getShip().size()==2).filter(x->x.getHealth()!=0).count() + "шт" +
-                "\n" + ship + ship + "          -" + pl2.getShipList().stream().filter(x->x.getShip().size()==4).filter(x->x.getHealth()!=0).count() + "шт" +
-                "\n" + ship + ship + ship + "       -"+ pl2.getShipList().stream().filter(x->x.getShip().size()==6).filter(x->x.getHealth()!=0).count() + "шт" +
-                "\n" + ship + ship + ship + ship +"    -"+ pl2.getShipList().stream().filter(x->x.getShip().size()==8).filter(x->x.getHealth()!=0).count() + "шт");
+        spisok2.setText(ship +"             -" + pl2.getShipList().stream().filter(x->x.getPosition().size()==2).filter(x->x.getHealth()!=0).count() + "шт" +
+                "\n" + ship + ship + "          -" + pl2.getShipList().stream().filter(x->x.getPosition().size()==4).filter(x->x.getHealth()!=0).count() + "шт" +
+                "\n" + ship + ship + ship + "       -"+ pl2.getShipList().stream().filter(x->x.getPosition().size()==6).filter(x->x.getHealth()!=0).count() + "шт" +
+                "\n" + ship + ship + ship + ship +"    -"+ pl2.getShipList().stream().filter(x->x.getPosition().size()==8).filter(x->x.getHealth()!=0).count() + "шт");
     }
 
     public static void GridReset(GridPane grid){

@@ -2,8 +2,6 @@ package ua.com.finaly;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import ua.com.finaly.Player.ButtonOnGrid;
 
@@ -38,8 +36,8 @@ public class Initialization {
             for(int column = 1; column < 11; column++){
                 ButtonOnGrid tf = new ButtonOnGrid(column,row);
                 for (ShipClass x:player1.getShipList()){
-                    for (int i=0;i<x.getShip().size();i+=2){
-                        if (x.getShip().get(i)==column&&x.getShip().get(i+1)==row){
+                    for (int i = 0; i<x.getPosition().size(); i+=2){
+                        if (x.getPosition().get(i)==column&&x.getPosition().get(i+1)==row){
                             tf.setText(ship);
                             if (x.isLife()){
                                 tf.setTextFill(GREEN);
