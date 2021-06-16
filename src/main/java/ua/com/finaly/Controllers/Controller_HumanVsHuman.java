@@ -27,6 +27,7 @@ import static ua.com.finaly.Player.PlayComp.*;
 
 
 public class Controller_HumanVsHuman implements Initializable {
+    String[] XA = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "G"};
 
     @FXML
     private Button restart;
@@ -107,13 +108,13 @@ public class Controller_HumanVsHuman implements Initializable {
 
     @FXML
     private void onChoiceCoil(ActionEvent actionEvent1) {
-        if (player2.getField()[xplayer][yplayer] == 1) {
-            CheckFireUser(xplayer, yplayer, player1, player1_enemy, player2, messageWindow);
+        ButtonOnPlay.setActive(true);
+        if (player2.getField()[xplayer - 1][yplayer - 1] == 1) {
+            CheckFireUser(xplayer - 1, yplayer - 1, player1, player1_enemy, player2, messageWindow);
             PlayComp.SpisokVizual(player2, spisok2);
-            ButtonOnPlay.setActive(true);
             if (player2.getShipList().stream().filter(t -> t.isLife() == true).count() == 0) {
                 exit.setVisible(true);
-                choiceCoil.setDisable(true);
+                choiceCoil.setVisible(true);
                 finish(player1, exit);
             }
         } else {
@@ -121,26 +122,29 @@ public class Controller_HumanVsHuman implements Initializable {
             GridStart1.setDisable(true);
             choiceCoil.setVisible(false);
             choiceCoil2.setVisible(true);
+            messageWindow.setText(player1.getName() + " выбрал координаты " + XA[xplayer-1] +
+                    (yplayer) + "-мимо");
         }
     }
 
     @FXML
     private void onChoiceCoil2(ActionEvent actionEvent1) {
-
-        if (player1.getField()[xplayer][yplayer] == 1) {
-            CheckFireUser(xplayer, yplayer, player2, player2_enemy, player1, messageWindow);
+        ButtonOnPlay.setActive(true);
+        if (player1.getField()[xplayer - 1][yplayer - 1] == 1) {
+            CheckFireUser(xplayer - 1, yplayer - 1, player2, player2_enemy, player1, messageWindow);
             PlayComp.SpisokVizual(player1, spisok1);
-            ButtonOnPlay.setActive(true);
             if (player1.getShipList().stream().filter(t -> t.isLife() == true).count() == 0) {
                 exit.setVisible(true);
-                choiceCoil.setDisable(true);
+                choiceCoil2.setVisible(true);
                 finish(player2, exit);
             }
-        }else{
+        } else {
             GridStart1.setDisable(false);
             GridStart2.setDisable(true);
             choiceCoil2.setVisible(false);
             choiceCoil.setVisible(true);
+            messageWindow.setText(player2.getName() + " выбрал координаты " + XA[xplayer-1] +
+                    (yplayer) + "-мимо");
         }
     }
 

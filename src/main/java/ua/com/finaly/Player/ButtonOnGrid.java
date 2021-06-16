@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.text.Text;
 import ua.com.finaly.Anketa;
 
 import static javafx.scene.paint.Color.BLACK;
@@ -34,6 +35,25 @@ public class ButtonOnGrid extends Button {
         this.setMinHeight(0);
         this.setMinWidth(0);
         this.setText(" ");
+
+        this.setOnAction(this::onClick);
+        this.setPadding(new Insets(1,1,1,1));
+        this.setShip(false);
+    }
+
+    public ButtonOnGrid(int x, int y, String text){
+        this.x=x;
+        this.y=y;
+        this.setDisable(false);
+        this.setPrefHeight(0);
+        this.setPrefWidth(0);
+        this.setAlignment(Pos.CENTER);
+        this.setMaxHeight(1.7976931348623157E308);
+        this.setMaxWidth(1.7976931348623157E308);
+        this.setGraphicTextGap(6.0);
+        this.setMinHeight(0);
+        this.setMinWidth(0);
+        this.setText(text);
 
         this.setOnAction(this::onClick);
         this.setPadding(new Insets(1,1,1,1));
