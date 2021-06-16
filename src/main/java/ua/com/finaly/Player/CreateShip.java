@@ -100,13 +100,6 @@ public class CreateShip {
                     player.setCount1(player.getCount1()+1);
                 }
                 if (player.getCount1()==4) break;
-//                if (button.stream().filter(x->x.getY()==finalI).filter(y->y.getX()==finalJ).count()==1){
-//                    player.getShipList().add(new ShipClass(finalJ-1,finalI-1));
-//                    button.removeAll(button.stream().filter(x->x.getY()==finalI).filter(y->y.getX()==finalJ)
-//                            .collect(Collectors.toList()));
-//                    player.setCount1(player.getCount1()+1);
-//                }
-//                if (player.getCount1()==4) break;
             }
         }
         for(ShipClass x:player.getShipList()){

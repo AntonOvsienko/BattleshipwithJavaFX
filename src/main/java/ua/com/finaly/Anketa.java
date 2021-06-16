@@ -89,13 +89,6 @@ public class Anketa{
         this.field = field;
     }
 
-    public int getHitpoint() {
-        return hitpoint;
-    }
-
-    public void setHitpoint(int hitpoint) {
-        this.hitpoint = hitpoint;
-    }
 
     public List<ShipClass> getShipList() {
         return shipList;
